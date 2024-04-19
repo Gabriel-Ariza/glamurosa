@@ -2,6 +2,7 @@ package com.store.api.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class VentaImplService implements VentaService {
     public VentaDTO save(VentaDTO ventaDTO) {
         Venta ventaCurrent = ventaConversion.convertirDTOVenta(ventaDTO);
         ventaRepository.save(ventaCurrent);
-        return ventaConversion.convertirVentaDTO(ventaCurrent);
+        return ventaConversion.convertirVentaDTO(ventaCurrent, true);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class VentaImplService implements VentaService {
             ventaCurrent.setId_venta(id);
             // Set other attributes as needed
             ventaRepository.save(ventaCurrent);
-            return ventaConversion.convertirVentaDTO(ventaCurrent);
+            return ventaConversion.convertirVentaDTO(ventaCurrent, true);
         }
         return null;
     }
@@ -50,21 +51,23 @@ public class VentaImplService implements VentaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<VentaDTO> findAll(){
+    public List<VentaDTO> findAll(boolean cargarCliente){
         List<Venta> ventas = (List<Venta>) ventaRepository.findAll();
         return ventas.stream()
-                    .map(venta -> ventaConversion.convertirVentaDTO(venta))
-                    .toList();
-        }
-
+                    .map(venta -> ventaConversion.convertirVentaDTO(venta, cargarCliente))
+                    .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional(readOnly = true)
-    public VentaDTO findById(Long id){
+    public VentaDTO findById(Long id, boolean cargarCliente){
         Optional<Venta> ventaCurrentOptional = ventaRepository.findById(id);
 
-        return ventaConversion.convertirVentaDTO(ventaCurrentOptional.get());
-
+        if (ventaCurrentOptional.isPresent()) {
+            return ventaConversion.convertirVentaDTO(ventaCurrentOptional.get(), cargarCliente);
+        } else {
+            return null;
+        }
     }
 
 }

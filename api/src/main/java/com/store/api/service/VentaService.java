@@ -19,10 +19,10 @@ public interface VentaService {
 
 
     /* -- LISTAR WITH JPArepository -- */
-    List<VentaDTO> findAll();
+    List<VentaDTO> findAll(boolean cargarCliente);
 
 
     /* -- ENCONTRAR 1 WITH JPArepository -- */
-    VentaDTO findById(Long id);
+    VentaDTO findById(Long id, boolean cargarCliente);
 
 }

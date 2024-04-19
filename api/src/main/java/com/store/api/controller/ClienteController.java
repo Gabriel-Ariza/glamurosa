@@ -40,12 +40,38 @@ public class ClienteController {
     public List<ClienteDTO> findAll(@RequestParam(required = false, defaultValue = "false") boolean cargarCompras) {
         return clienteService.findAll(cargarCompras);
     }
-    //--/clientes/?cargarCompras=true
+    /*
+    http://localhost:8080/clientes/?cargarCompras=true
+    */
 
 
     @GetMapping("/{id}")
     public ClienteDTO findById(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean cargarCompras) {
         return clienteService.findById(id, cargarCompras);
     }
-    //--/clientes/1?cargarCompras=true
+    /*
+    http://localhost:8080/clientes/1?cargarCompras=true
+    */
+
+
+    @GetMapping("/cantidad")
+    public List<ClienteDTO> clientesXcantidadCompras(@RequestParam Long compras) {
+        return clienteService.clientesXcantidadCompras(compras, false);
+    }
+    /*
+    http://localhost:8080/clientes/cantidad?compras=2
+    */
+
+
+    @GetMapping("/compras")
+    public List<ClienteDTO> clientesXcantidadComprasCargado(@RequestParam Long cantidad) {
+        return clienteService.clientesXcantidadCompras(cantidad, true);
+    }
+    /*
+    http://localhost:8080/clientes/compras?cantidad=2
+    */
+
+
+
+
 }

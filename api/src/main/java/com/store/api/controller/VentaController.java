@@ -37,15 +37,21 @@ public class VentaController {
 
 
     @GetMapping("/")
-    public List<VentaDTO> findAll() {
-        return ventaService.findAll();
+    public List<VentaDTO> findAll(@RequestParam(required = false, defaultValue = "false") boolean cargarCliente) {
+        return ventaService.findAll(cargarCliente);
     }
+    /*
+    http://localhost:8080/ventas/?cargarCliente=true
+    */
 
 
     @GetMapping("/{id}")
-    public VentaDTO findById(@PathVariable Long id) {
-        return ventaService.findById(id);
+    public VentaDTO findById(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean cargarCliente) {
+        return ventaService.findById(id, cargarCliente);
     }
+    /*
+    http://localhost:8080/ventas/1/?cargarCliente=true
+    */
 
 
 }

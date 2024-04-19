@@ -25,4 +25,10 @@ public interface ClienteService {
     /* -- ENCONTRAR 1 WITH JPArepository -- */
     ClienteDTO findById(Long id, boolean cargarCompras);
 
+
+    /* -- Mostrar clientes segun su cantidad de compras -- */
+    List<ClienteDTO> clientesXcantidadCompras(Long cantidadCompras, boolean cargarCompras);
+
+
+
 }

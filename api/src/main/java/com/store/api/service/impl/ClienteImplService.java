@@ -81,4 +81,14 @@ public class ClienteImplService implements ClienteService{
             return null;
         }
     }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClienteDTO> clientesXcantidadCompras(Long cantidadCompras, boolean cargarCompras){
+        List<Cliente> clientes = clienteRepository.clientesXcantidadCompras(cantidadCompras);
+        return clientes.stream()
+                        .map(cliente -> clienteConversion.convertirClienteDTO(cliente, cargarCompras))
+                        .collect(Collectors.toList());
+    }
 }

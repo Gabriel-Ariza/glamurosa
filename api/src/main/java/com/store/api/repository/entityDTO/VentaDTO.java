@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.store.api.repository.entity.Cliente;
 import lombok.Data;
 
 
@@ -20,7 +21,12 @@ public class VentaDTO {
     private Long id_venta;
     private Date createdAt;
     private BigDecimal total;
-    private Cliente cliente;
+
+    @JsonInclude(Include.NON_NULL)
+    private ClienteDTO cliente;
+
+    @JsonInclude(Include.NON_NULL)
+    private Long id_cliente;
 
 
 }
