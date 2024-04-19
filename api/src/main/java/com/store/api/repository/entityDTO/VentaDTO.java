@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.store.api.config.CustomDateSerializer;
 import lombok.Data;
 
 
@@ -17,16 +19,21 @@ import lombok.Data;
 )
 public class VentaDTO {
 
-
     private Long id_venta;
+
+
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date createdAt;
+
+
     private BigDecimal total;
+
 
     @JsonInclude(Include.NON_NULL)
     private ClienteDTO cliente;
 
+
     @JsonInclude(Include.NON_NULL)
     private Long id_cliente;
-
 
 }
