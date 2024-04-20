@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.store.api.config.CustomDateSerializer;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ import lombok.Data;
     generator = ObjectIdGenerators.PropertyGenerator.class,
     property = "id_venta"
 )
+@JsonIgnoreProperties(value = { "createdAt", "cliente" }, allowGetters = true)
 public class VentaDTO {
 
     private Long id_venta;
