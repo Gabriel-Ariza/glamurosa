@@ -12,7 +12,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -52,14 +55,16 @@ public class Cliente {
     private String telefono;
 
 
-    @Column(columnDefinition = "VARCHAR(100)", length = 60, nullable = false)
-    private String email;
-
-
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
+
+
+    @JoinColumn(name = "id_usuario", columnDefinition = "MEDIUMINT UNSIGNED")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Usuario usuario;
 
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

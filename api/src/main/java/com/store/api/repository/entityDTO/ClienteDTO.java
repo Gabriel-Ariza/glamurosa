@@ -23,7 +23,11 @@ public class ClienteDTO {
     private String apellidos;
     private String dni;
     private String telefono;
+
     private String email;
+
+    @JsonInclude(Include.NON_NULL)
+    private UsuarioDTO usuario;
 
     @JsonInclude(Include.NON_NULL)
     private List<VentaDTO> compras;

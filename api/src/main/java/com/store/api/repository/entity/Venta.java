@@ -31,7 +31,7 @@ public class Venta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED")
+    @Column(columnDefinition = "MEDIUMINT UNSIGNED")
     private Long id_venta;
 
 

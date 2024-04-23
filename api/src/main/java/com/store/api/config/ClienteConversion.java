@@ -27,8 +27,12 @@ public class ClienteConversion {
         ClienteDTO.setApellidos(Cliente.getApellidos());
         ClienteDTO.setDni(Cliente.getDni());
         ClienteDTO.setTelefono(Cliente.getTelefono());
-        ClienteDTO.setEmail(Cliente.getEmail());
-
+    
+        // Solo obtenemos el correo del usuario, no el usuario completo
+        if (Cliente.getUsuario() != null) {
+            ClienteDTO.setEmail(Cliente.getUsuario().getEmail());
+        }
+    
         if (cargarCompras) {
             Hibernate.initialize(Cliente.getCompras());
             Long id_cliente = Cliente.getId_cliente();
@@ -40,17 +44,17 @@ public class ClienteConversion {
                 ventaDTO.setTotal(venta.getTotal());
                 ventaDTO.setCliente(null);
                 ventaDTO.setId_cliente(id_cliente);
-
+    
                 return ventaDTO;
             })
             .collect(Collectors.toList()));
-
+    
         } else {
             ClienteDTO.setCompras(null);
         }
-
-
+    
         return ClienteDTO;
     }
+
 
 }

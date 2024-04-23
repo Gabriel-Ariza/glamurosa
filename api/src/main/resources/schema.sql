@@ -1,31 +1,47 @@
+CREATE TABLE IF NOT EXISTS usuario (
+    id_usuario MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(60) NOT NULL UNIQUE,
+    contrasena VARCHAR(60) NOT NULL,
+    rol ENUM('REGISTRADO', 'MODERADOR', 'ADMIN') NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS cliente (
-    id_cliente INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_cliente MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nombres VARCHAR(60) NOT NULL,
     apellidos VARCHAR(60) NOT NULL,
     dni VARCHAR(15) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_usuario MEDIUMINT UNSIGNED,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS venta (
-    id_venta INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_venta MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     created_at TIMESTAMP NOT NULL,
     total DECIMAL(10,2) NOT NULL,
-    id_cliente INT UNSIGNED,
+    id_cliente MEDIUMINT UNSIGNED,
     FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE
 );
+ALTER TABLE venta MODIFY id_cliente MEDIUMINT UNSIGNED NULL;
 
-INSERT INTO cliente (nombres, apellidos, dni, telefono, email)
+INSERT IGNORE INTO usuario (id_usuario, email, contrasena, rol)
 VALUES
-    ('Juan', 'Perez', '12345678', '987654321', 'juan.perez@gmail.com'),
-    ('Maria', 'Gomez', '87654321', '123456789', 'maria.gomez@outlook.com'),
-    ('Carlos', 'Rodriguez', '56781234', '234567891', 'carlos.rodriguez@openai.com');
+    (1, 'registrado@gmail.com', '123', 'REGISTRADO'),
+    (2, 'moderador@glamurosa.com', 'beauty', 'MODERADOR'),
+    (3, 'root@admin.com', 'pase', 'ADMIN');
+
+INSERT IGNORE INTO cliente (id_cliente, nombres, apellidos, dni, telefono, id_usuario)
+VALUES
+    (1, 'Juan', 'Perez', '12345678', '987654321', 1),
+    (2, 'Maria', 'Gomez', '87654321', '123456789', 2),
+    (3, 'Carlos', 'Rodriguez', '56781234', '234567891', 3);
 
 
-INSERT INTO venta (created_at, total, id_cliente)
+INSERT IGNORE INTO venta (id_venta, created_at, total, id_cliente)
 VALUES 
-    ('2024-04-17 04:45:10', 120.00, 1),
-    ('2024-03-06 12:10:25', 332.00, 1),
-    ('2024-02-23 16:25:40', 127.00, 2),
-    ('2024-01-12 19:36:11', 247.00, 3);
+    (1, '2024-01-01 16:50:48', 100.00, 1),
+    (2, '2024-02-01 19:33:16', 200.00, 1),
+    (3, '2024-03-01 14:20:33', 150.00, 2),
+    (4, '2024-04-01 08:46:17', 250.00, 3),
+    (5, '2024-04-30 10:30:26', 300.00, NULL);

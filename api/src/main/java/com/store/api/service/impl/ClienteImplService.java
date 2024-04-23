@@ -15,7 +15,9 @@ import com.store.api.exception.NombreInvalidoException;
 import com.store.api.exception.NotFoundElementsException;
 import com.store.api.exception.TipoDatoIncorrectoException;
 import com.store.api.repository.ClienteRepository;
+import com.store.api.repository.UsuarioRepository;
 import com.store.api.repository.entity.Cliente;
+import com.store.api.repository.entity.Usuario;
 import com.store.api.repository.entityDTO.ClienteDTO;
 import com.store.api.service.ClienteService;
 
@@ -27,6 +29,7 @@ public class ClienteImplService implements ClienteService{
 
     @Autowired
     private ClienteRepository clienteRepository;
+    private UsuarioRepository UsuarioRepository;
     private ClienteConversion clienteConversion;
 
 
@@ -34,6 +37,14 @@ public class ClienteImplService implements ClienteService{
     @Transactional
     public ClienteDTO save(ClienteDTO clienteDTO) {
         try {
+            // Comprueba si el UsuarioDTO existe
+            if (clienteDTO.getUsuario() != null) {
+                Optional<Usuario> usuarioOptional = UsuarioRepository.findById(clienteDTO.getUsuario().getId_usuario());
+                if (!usuarioOptional.isPresent()) {
+                    throw new NotFoundElementsException("Usuario no encontrado");
+                }
+            }
+    
             Cliente clienteCurrent = clienteConversion.convertirDTOCliente(clienteDTO);
             Cliente clienteSaved = clienteRepository.save(clienteCurrent);
             return clienteConversion.convertirClienteDTO(clienteSaved, true);
@@ -60,7 +71,6 @@ public class ClienteImplService implements ClienteService{
                 clienteCurrent.setApellidos(clienteDTO.getApellidos());
                 clienteCurrent.setDni(clienteDTO.getDni());
                 clienteCurrent.setTelefono(clienteDTO.getTelefono());
-                clienteCurrent.setEmail(clienteDTO.getEmail());
         
                 clienteRepository.save(clienteCurrent);
                 
